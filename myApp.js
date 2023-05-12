@@ -3,9 +3,26 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGO_URI);
 
 let Person;
+const personSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  age: Number,
+  favoriteFoods: [String],
+});
+Person = mongoose.model("Person", personSchema);
 
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  let person1 = new Person({
+    name: "Joe",
+    age: 34,
+    favoriteFoods: ["guacamole", "cheese", "banana"],
+  });
+  person1.save((err, data) => {
+    if (err) return console.log(err);
+    done(null, data);
+  });
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
